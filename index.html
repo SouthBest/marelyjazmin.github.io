@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>poverty awareness</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        header h1 {
+            margin-bottom: 10px;
+            font-size: 2.25rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .header-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        
+        .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            align-items: stretch;
+        }
+        
+        sidebar {
+            width: 200px;
+            min-width: 200px;
+            background-color: #34495e;
+            color: white;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            transition: width 0.3s, padding 0.3s, margin 0.3s;
+            box-sizing: border-box;
+        }
+
+        sidebar.closed {
+            width: 0;
+            min-width: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        sidebar h3 {
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+        }
+        
+        sidebar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        sidebar ul li {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 5px;
+        }
+        
+        sidebar ul li:hover {
+            background-color: #2c3e50;
+            color: #e74c3c;
+        }
+        
+        main {
+            flex: 1;
+            padding: 30px;
+            background-color: #20b2aa;
+            min-width: 0;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        sidebar ul li.active {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        #home {
+            background-color: #add8e6;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        #home h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        #home p {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+        }
+
+        /* Light-blue box for Get Involved section only */
+        #involved .involved-box {
+            background-color: #e6f7ff;
+            padding: 20px;
+            border-radius: 8px;
+            color: #03313a;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        #involved .involved-box h2 {
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        #involved .involved-box p {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        /* Light-blue box for "How Do People Live in Poverty" section */
+        #living .living-box {
+            background-color: #e6f7ff;
+            padding: 20px;
+            border-radius: 8px;
+            color: #03313a;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        #living .living-box h2 {
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        #living .living-box p {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        /* Local green theme for this file only */
+        :root {
+            --green-dark: #0b3d00;
+            --green-mid: #196f3d;
+            --green-accent: #27ae60;
+            --green-muted: #e8f9ef;
+            --green-text: #05240d;
+        }
+
+        header {
+            background-color: var(--green-dark) !important;
+            color: var(--green-muted) !important;
+        }
+
+        .toggle-btn {
+            background-color: var(--green-accent) !important;
+            color: var(--green-muted) !important;
+        }
+
+        .toggle-btn:hover {
+            background-color: #1f8a44 !important;
+        }
+
+        sidebar {
+            background-color: var(--green-mid) !important;
+            color: var(--green-muted) !important;
+        }
+
+        sidebar h3 {
+            border-bottom-color: #9fe6c9 !important;
+        }
+
+        sidebar ul li:hover {
+            background-color: #155b2b !important;
+            color: var(--green-muted) !important;
+        }
+
+        main {
+            background: linear-gradient(180deg, var(--green-muted), #f3fff7) !important;
+            color: var(--green-text) !important;
+        }
+
+        #home, #involved .involved-box, #living .living-box {
+            background-color: var(--green-muted) !important;
+            color: var(--green-text) !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <button class="toggle-btn" id="sidebarToggle">☰ Menu</button>
+            <div>
+                <h1>Poverty is real</h1>
+                <p>Learn more here</p>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <sidebar>
+            <h3>Navigation</h3>
+            <ul>
+                <li class="nav-item active" data-section="home">Home</li>
+                <li class="nav-item" data-section="scratchgame">Scratch Story</li>
+                <li class="nav-item" data-section="resources">Educational quiz </li>
+                <li class="nav-item" data-section="involved">Poverty around the world</li>
+                <li class="nav-item" data-section="living">Types of poverty</li>
+            </ul>
+        </sidebar>
+        
+        <main>
+            <div id="home" class="content-section active">
+                <h2>Welcome</h2>
+                <img src="yesnt.png" alt="ok" style="float: left; margin: 20px 20px 20px 0; max-width: 450px; width: 100%; height: auto;">
+                <h3>What is poverty?</h3>
+                <p>Poverty is a state of being in which a person lacks the income (or other means of support) to reliably meet their basic personal needs, such as food, shelter, and clothing. Poverty exists in every country in the world, though it is a more pressing issue in some countries than in others. </p>
+                <br>
+                <p></p>
+                <h3>Possible causes of poverty</h3>
+                <p>Poverty has a wide range of possible causes, from the amount of fresh water and arable land in a region to government policies or ongoing armed conflict. Additionally, natural disasters such as the COVID pandemic or the 2020 earthquakes in Puerto Rico can further strain an impoverished area’s already scarce resources.
+
+Poverty can be a cyclical trap. For people to rise above poverty, they need education, proper health care and sanitation, access to clean water, and job opportunities that can help them improve their financial situation. Unfortunately, people in poverty often live in areas low on these resources. Therefore, the people become trapped in a vicious cycle in which they can’t get better jobs until they improve their situation (education is particularly helpful), but they can’t afford to improve their situation until they get better jobs.</p>
+                <h3> How many people are affected by poverty?</h3>
+                <p>As of 2025, approximately 800 million people worldwide live in extreme poverty, surviving on less than $3 per day.</p>
+                <p> That is about 10% of the global population.  </p>
+                <p>From 1990 to 2025, the total number of people worldwide living in extreme poverty declined from around 2.3 billion to around 831 million. The sharp decline over this period was largely driven by robust, broad-based economic growth in East Asia and South Asia.
+
+Over the last decade, however, global poverty reduction has slowed substantially. This slowdown is due to a combination of interconnected crises, including sluggish economic growth, high levels of debt, the effects of the COVID-19 pandemic, conflict and fragility, and severe weather-related shocks.
+
+These overlapping crises have hit low-income countries the hardest. At the current pace of progress, it could take decades to eradicate extreme poverty.
+
+In 2025, an estimated 831 million people were living in extreme poverty, each trying to survive on less than $3 per day.
+
+Extreme poverty has become increasingly concentrated in Sub-Saharan Africa, and places affected by conflict and fragility.
+
+Although a necessary condition, economic growth is not enough to break the cycle of poverty. Stronger foundational investments in infrastructure, human capital, and institutions are critical to ensure people can climb the socioeconomic ladder and escape extreme poverty.</p>
+            </div>
+            
+            <div id="scratchgame" class="content-section">
+                <h2>Scratch Story</h2>
+<div class="scratch" style="display: flex; justify-content: center;" >
+                    <iframe src="https://scratch.mit.edu/projects/1275650020/embed" width="600" height="400" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            
+            <div id="resources" class="content-section">
+                <h2>Educational quiz</h2>
+                <div class="code.org" style="display: flex; justify-content: center;" >
+                    <iframe src="https://studio.code.org/projects/applab/fa436730-6629-4bc0-ba4a-00044a5c0f4f/embed" width="900" height="900" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            
+            <div id="involved" class="content-section">
+                <div class="involved-box">
+                    <h2>Poverty around the world</h2>
+                    <p>Around the world today, poverty remains a major challenge despite decades of progress. According to the latest estimates from international organizations, about one in ten people — nearly 10.3% of the global population — live in extreme poverty, defined as surviving on less than about $3.00 per day. This figure reflects updated measurement standards adopted globally and highlights how deeply poverty still affects many regions of the world.</p>
+                    <p>Although global poverty rates have fallen significantly over the long term, particularly since the 1990s, progress has slowed in recent years. New data show that the number of people in extreme poverty remains in the hundreds of millions, with many concentrated in Sub-Saharan Africa and fragile, conflict-affected countries where economic gains are harder to sustain.</p>
+                    <p>South Sudan has the highest rate of extreme poverty at 82%.</p>
+                    <p>Next is Madagascar with 75%.</p>
+                    <img src='Screenshot 2026-02-23 084504.png' style="float: left; margin: 20px 20px 20px 0; width: 700px; height: auto;">
+                    <p>In 3rd there is Eritrea with 69%.</p>
+                    <h3>Children and women are disproportionately affected</h3>
+                    <p>Recent reports indicate that children account for more than half of those living in extreme poverty, even though they make up only about 30% of the world’s population. Sub-Saharan Africa, in particular, bears a heavy share of this burden, with extremely high child poverty rates that have not fallen in recent years.</p>
+                    <h3>Poverty is not only about extreme lack of income.</h3>
+                    <p>Broader measures show that a much larger share of the global population lives at income levels below other international poverty thresholds — for example, nearly one in five people live on less than about $4.20 per day, and close to half live on less than about $8.30 per day. These figures highlight how economic insecurity affects people well beyond the strictest definitions of extreme poverty.</p>
+                    <h3>Historical progress has been remarkable yet uneven.</h3>
+                    <p>Over the past few decades, well over a billion people have been lifted above the lowest poverty thresholds, and many countries have achieved dramatic reductions in extreme poverty. However, these gains have been unevenly distributed. Some regions continue to struggle with high poverty rates, and ongoing economic, health, and climate shocks threaten to reverse or stall progress.</p>
+                </div>
+            </div>
+            
+            <div id="living" class="content-section">
+                <div class="living-box">
+                    <h2>The different types of poverty</h2>
+                    <p>Poverty can be classified into several different types depending on how it is measured and experienced.</p>
+                    <h3>1. Absolute Poverty</h3> <p>Absolute poverty is when a person does not have enough income to meet basic needs such as food, clean water, shelter, clothing, and healthcare. It is usually measured by an international poverty line (for example, living on less than about $2–3 per day).</p> <h5>Example:</h5> 
+                    <p>A family that cannot afford enough food to eat every day or does not have safe drinking water is living in absolute poverty.</p>
+                    <h3>2. Relative Poverty</h3>
+                    <p>Relative poverty occurs when a person’s income is much lower than the average income in their country. They may meet basic survival needs but cannot afford what is considered a normal standard of living in their society.</p>
+                    <h5>Example: </h5>
+                    <p>In a wealthy country, a family that cannot afford internet access, proper heating, or school supplies for their children may be considered relatively poor.</p>
+                    <h3>3. Situational Poverty</h3>
+                    <p>Situational poverty happens because of a sudden event or crisis, such as losing a job, illness, divorce, natural disaster, or economic recession.</p>
+                    <h5>Example: </h5>
+                    <p>A person who becomes unemployed during an economic crisis and struggles to pay rent is experiencing situational poverty.</p>
+                    <h3>4. Generational Poverty</h3>
+                    <p>Generational poverty occurs when poverty continues for two or more generations in a family. It is often linked to limited education and fewer job opportunities.</p>
+                    <h5>Example: </h5>
+                    <p>A child born into a family where parents and grandparents have always struggled financially and had little access to education.</p>
+                    <h3>5. Multidimensional Poverty</h3>
+                    <p>Multidimensional poverty looks beyond income and includes lack of access to education, healthcare, clean water, electricity, and proper housing.</p>
+                    <h5>Example:</h5>
+                    <p>A household may earn some income but has no access to schooling, healthcare services, or safe sanitation facilities.</p>
+                    <img src='noent.jpg' width="450" height="auto" style="float: left; margin: 20px 20px 20px 0;">
+                </div>
+            </div>
+            
+            
+        </main>
+    </div>
+    
+    <script>
+        const navItems = document.querySelectorAll('.nav-item');
+        const sidebar = document.querySelector('sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        
+        // Toggle sidebar functionality
+        toggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('closed');
+            toggleBtn.textContent = sidebar.classList.contains('closed') ? '☰ Menu' : '✕ Close';
+        });
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Remove active class from all nav items
+                navItems.forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                
+                // Show selected section and highlight nav item
+                document.getElementById(sectionId).classList.add('active');
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
